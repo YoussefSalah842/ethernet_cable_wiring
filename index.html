@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethernet Cable Wiring Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        body[dir="rtl"] {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .lang-switcher {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 2000;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            font-weight: bold;
+            color: #667eea;
+            transition: all 0.3s ease;
+        }
+
+        body[dir="rtl"] .lang-switcher {
+            left: auto;
+            right: 20px;
+        }
+
+        .lang-switcher:hover {
+            transform: scale(1.05);
+            background: #667eea;
+            color: white;
+        }
+
+        .banner {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 20px auto;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 150px;
+        }
+
+        .banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .banner-placeholder {
+            font-size: 1.5em;
+            color: #999;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .standards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .standard-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .standard-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .standard-description {
+            text-align: center;
+            color: #555;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+        }
+
+        .wire-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .wire {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        body[dir="rtl"] .wire {
+            flex-direction: row-reverse;
+        }
+
+        .wire:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        body[dir="rtl"] .wire:hover {
+            transform: translateX(-5px);
+        }
+
+        .pin-number {
+            width: 35px;
+            height: 35px;
+            background: #34495e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 0.9em;
+        }
+
+        body[dir="rtl"] .pin-number {
+            margin-right: 0;
+            margin-left: 15px;
+        }
+
+        .color-box {
+            width: 50px;
+            height: 30px;
+            border-radius: 5px;
+            margin-right: 15px;
+            border: 2px solid #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        body[dir="rtl"] .color-box {
+            margin-right: 0;
+            margin-left: 15px;
+        }
+
+        .wire-label {
+            flex: 1;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: #2c3e50;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .tooltip.show {
+            opacity: 1;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #2c3e50;
+        }
+
+        .installation-guide {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .installation-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .step {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .step-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .step-description {
+            color: #555;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 30px;
+            border-radius: 5px;
+        }
+
+        body[dir="rtl"] .note {
+            border-left: none;
+            border-right: 4px solid #ffc107;
+        }
+
+        .note-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 5px;
+        }
+
+        .note-text {
+            color: #856404;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .standards {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+
+            .lang-switcher {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body dir="ltr">
+    <div class="lang-switcher" id="langBtn" onclick="toggleLanguage()">عربي</div>
+
+    <div class="banner" id="topBanner">
+        <div class="banner-placeholder">Top Banner (bntop.png)</div>
+    </div>
+
+    <div class="container">
+        <h1 id="mainTitle">🔌 Ethernet Cable Wiring Guide</h1>
+        <p class="subtitle" id="subtitle">Complete Guide for T-568A & T-568B Standards</p>
+
+        <div class="standards">
+            <div class="standard-card">
+                <div class="standard-title">T-568A Standard</div>
+                <div class="standard-description" id="desc568a">Common in residential installations</div>
+                <div class="wire-container" id="t568a"></div>
+            </div>
+
+            <div class="standard-card">
+                <div class="standard-title">T-568B Standard</div>
+                <div class="standard-description" id="desc568b">Most common commercial standard</div>
+                <div class="wire-container" id="t568b"></div>
+            </div>
+        </div>
+
+        <div class="installation-guide">
+            <div class="installation-title" id="installTitle">📋 Installation Steps</div>
+            <div class="steps" id="stepsContainer"></div>
+        </div>
+
+        <div class="note">
+            <div class="note-title" id="noteTitle">⚠️ Important Notes:</div>
+            <div class="note-text" id="noteText"></div>
+        </div>
+    </div>
+
+    <div class="banner" id="bottomBanner" style="margin-top: 20px;">
+        <div class="banner-placeholder">Bottom Banner (bndown.png)</div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        let currentLang = 'en';
+
+        const translations = {
+            en: {
+                langBtn: 'عربي',
+                mainTitle: '🔌 Ethernet Cable Wiring Guide',
+                subtitle: 'Complete Guide for T-568A & T-568B Standards',
+                desc568a: 'Common in residential installations',
+                desc568b: 'Most common commercial standard',
+                installTitle: '📋 Installation Steps',
+                noteTitle: '⚠️ Important Notes:',
+                noteText: `• Both ends must use the SAME standard (T-568A or T-568B) for a straight-through cable<br>
+                • Use different standards on each end ONLY for a crossover cable (rarely needed today)<br>
+                • T-568B is more commonly used in commercial installations<br>
+                • Always test the cable after crimping with a cable tester`,
+                steps: [
+                    { title: 'Strip the Cable', desc: 'Remove about 1.5 inches (4cm) of the outer jacket. Be careful not to damage the inner wires.' },
+                    { title: 'Untwist the Pairs', desc: 'Carefully untwist the wire pairs and straighten them out completely.' },
+                    { title: 'Arrange Wires', desc: 'Arrange the wires according to T-568A or T-568B standard from left to right.' },
+                    { title: 'Trim Evenly', desc: 'Cut the wires to equal length, about 0.5 inches (1.3cm) from the jacket.' },
+                    { title: 'Insert into RJ45', desc: 'Push the wires fully into the RJ45 connector until they reach the end.' },
+                    { title: 'Crimp the Connector', desc: 'Use a crimping tool to firmly secure the connector. Check that all pins are down.' }
+                ],
+                signal: 'Signal'
+            },
+            ar: {
+                langBtn: 'English',
+                mainTitle: '🔌 دليل توصيل سلك النت',
+                subtitle: 'دليل كامل لمعيار T-568A و T-568B',
+                desc568a: 'شائع في البيوت والشقق',
+                desc568b: 'الأكتر استخداماً في الشركات والمحلات',
+                installTitle: '📋 خطوات التركيب',
+                noteTitle: '⚠️ ملاحظات مهمة:',
+                noteText: `• لازم تستخدم نفس المعيار (T-568A أو T-568B) في الطرفين عشان الكابل يشتغل صح<br>
+                • استخدم معيارين مختلفين في كل طرف بس لو عايز كابل متقاطع (نادر دلوقتي)<br>
+                • معيار T-568B هو الأكتر استخداماً في الشركات<br>
+                • دايماً اختبر السلك بعد ما تكبسه بجهاز الاختبار`,
+                steps: [
+                    { title: 'قشر السلك', desc: 'اقشر حوالي 4 سم من الغلاف البراني. خلي بالك ما تقطعش الأسلاك اللي جوه.' },
+                    { title: 'فك الأسلاك الملفوفة', desc: 'فك الأسلاك اللي ملفوفة على بعض بهدوء وافردهم كويس خالص.' },
+                    { title: 'رتب الأسلاك', desc: 'رتب الأسلاك زي ما موجود في معيار T-568A أو T-568B من الشمال لليمين.' },
+                    { title: 'قص الأسلاك بالتساوي', desc: 'اقطع الأسلاك كلها بنفس الطول، حوالي 1.3 سم من الغلاف.' },
+                    { title: 'حط الأسلاك في RJ45', desc: 'ادخل الأسلاك كلها جوه قطعة الـ RJ45 لحد ما توصل لآخرها.' },
+                    { title: 'اكبس الموصل', desc: 'استخدم الكباسة عشان تثبت الموصل كويس. اتأكد إن كل الدبابيس نزلت.' }
+                ],
+                signal: 'الإشارة'
+            }
+        };
+
+        const t568a = [
+            { pin: 1, color: '#90EE90', stripe: true, nameEn: 'White/Green', nameAr: 'أبيض/أخضر', signal: 'TX+' },
+            { pin: 2, color: '#00FF00', stripe: false, nameEn: 'Green', nameAr: 'أخضر', signal: 'TX-' },
+            { pin: 3, color: '#FFD700', stripe: true, nameEn: 'White/Orange', nameAr: 'أبيض/برتقالي', signal: 'RX+' },
+            { pin: 4, color: '#0000FF', stripe: false, nameEn: 'Blue', nameAr: 'أزرق', signal: 'Not Used' },
+            { pin: 5, color: '#87CEEB', stripe: true, nameEn: 'White/Blue', nameAr: 'أبيض/أزرق', signal: 'Not Used' },
+            { pin: 6, color: '#FFA500', stripe: false, nameEn: 'Orange', nameAr: 'برتقالي', signal: 'RX-' },
+            { pin: 7, color: '#D2691E', stripe: true, nameEn: 'White/Brown', nameAr: 'أبيض/بني', signal: 'Not Used' },
+            { pin: 8, color: '#8B4513', stripe: false, nameEn: 'Brown', nameAr: 'بني', signal: 'Not Used' }
+        ];
+
+        const t568b = [
+            { pin: 1, color: '#FFD700', stripe: true, nameEn: 'White/Orange', nameAr: 'أبيض/برتقالي', signal: 'TX+' },
+            { pin: 2, color: '#FFA500', stripe: false, nameEn: 'Orange', nameAr: 'برتقالي', signal: 'TX-' },
+            { pin: 3, color: '#90EE90', stripe: true, nameEn: 'White/Green', nameAr: 'أبيض/أخضر', signal: 'RX+' },
+            { pin: 4, color: '#0000FF', stripe: false, nameEn: 'Blue', nameAr: 'أزرق', signal: 'Not Used' },
+            { pin: 5, color: '#87CEEB', stripe: true, nameEn: 'White/Blue', nameAr: 'أبيض/أزرق', signal: 'Not Used' },
+            { pin: 6, color: '#00FF00', stripe: false, nameEn: 'Green', nameAr: 'أخضر', signal: 'RX-' },
+            { pin: 7, color: '#D2691E', stripe: true, nameEn: 'White/Brown', nameAr: 'أبيض/بني', signal: 'Not Used' },
+            { pin: 8, color: '#8B4513', stripe: false, nameEn: 'Brown', nameAr: 'بني', signal: 'Not Used' }
+        ];
+
+        function createWireElement(wire) {
+            const wireDiv = document.createElement('div');
+            wireDiv.className = 'wire';
+            
+            const pinNumber = document.createElement('div');
+            pinNumber.className = 'pin-number';
+            pinNumber.textContent = wire.pin;
+            
+            const colorBox = document.createElement('div');
+            colorBox.className = 'color-box';
+            if (wire.stripe) {
+                colorBox.style.background = `repeating-linear-gradient(
+                    45deg,
+                    ${wire.color},
+                    ${wire.color} 5px,
+                    white 5px,
+                    white 10px
+                )`;
+            } else {
+                colorBox.style.background = wire.color;
+            }
+            
+            const label = document.createElement('div');
+            label.className = 'wire-label';
+            label.textContent = currentLang === 'en' ? wire.nameEn : wire.nameAr;
+            
+            wireDiv.appendChild(pinNumber);
+            wireDiv.appendChild(colorBox);
+            wireDiv.appendChild(label);
+            
+            wireDiv.addEventListener('mouseenter', (e) => showTooltip(e, wire));
+            wireDiv.addEventListener('mouseleave', hideTooltip);
+            
+            return wireDiv;
+        }
+
+        function showTooltip(e, wire) {
+            const tooltip = document.getElementById('tooltip');
+            const name = currentLang === 'en' ? wire.nameEn : wire.nameAr;
+            const signalLabel = translations[currentLang].signal;
+            tooltip.textContent = `Pin ${wire.pin}: ${name} - ${signalLabel}: ${wire.signal}`;
+            tooltip.classList.add('show');
+            
+            const rect = e.target.getBoundingClientRect();
+            tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
+            tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
+        }
+
+        function hideTooltip() {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.classList.remove('show');
+        }
+
+        function renderWires() {
+            const t568aContainer = document.getElementById('t568a');
+            const t568bContainer = document.getElementById('t568b');
+            
+            t568aContainer.innerHTML = '';
+            t568bContainer.innerHTML = '';
+            
+            t568a.forEach(wire => {
+                t568aContainer.appendChild(createWireElement(wire));
+            });
+
+            t568b.forEach(wire => {
+                t568bContainer.appendChild(createWireElement(wire));
+            });
+        }
+
+        function renderSteps() {
+            const stepsContainer = document.getElementById('stepsContainer');
+            stepsContainer.innerHTML = '';
+            
+            translations[currentLang].steps.forEach((step, index) => {
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'step';
+                
+                stepDiv.innerHTML = `
+                    <div class="step-number">${index + 1}</div>
+                    <div class="step-title">${step.title}</div>
+                    <div class="step-description">${step.desc}</div>
+                `;
+                
+                stepsContainer.appendChild(stepDiv);
+            });
+        }
+
+        function updateContent() {
+            const trans = translations[currentLang];
+            
+            document.getElementById('langBtn').textContent = trans.langBtn;
+            document.getElementById('mainTitle').textContent = trans.mainTitle;
+            document.getElementById('subtitle').textContent = trans.subtitle;
+            document.getElementById('desc568a').textContent = trans.desc568a;
+            document.getElementById('desc568b').textContent = trans.desc568b;
+            document.getElementById('installTitle').textContent = trans.installTitle;
+            document.getElementById('noteTitle').textContent = trans.noteTitle;
+            document.getElementById('noteText').innerHTML = trans.noteText;
+            
+            renderSteps();
+            renderWires();
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            document.body.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+            document.documentElement.setAttribute('lang', currentLang === 'ar' ? 'ar' : 'en');
+            updateContent();
+            loadBanners(); // Reload banners with correct language
+        }
+
+        // Initialize banners with images if available
+        function loadBanners() {
+            const topBanner = document.getElementById('topBanner');
+            const bottomBanner = document.getElementById('bottomBanner');
+            
+            // Choose banner based on current language
+            const topBannerSrc = currentLang === 'en' ? 'bntop.png' : 'bntopar.png';
+            const bottomBannerSrc = currentLang === 'en' ? 'bndown.png' : 'bndownar.png';
+            
+            // Load top banner
+            const topImg = new Image();
+            topImg.src = topBannerSrc;
+            topImg.onload = function() {
+                topBanner.innerHTML = '';
+                topBanner.appendChild(topImg);
+            };
+            topImg.onerror = function() {
+                const placeholder = currentLang === 'en' ? 'bntop.png' : 'bntopar.png';
+                topBanner.innerHTML = `<div class="banner-placeholder">Top Banner (${placeholder})</div>`;
+            };
+            
+            // Load bottom banner
+            const bottomImg = new Image();
+            bottomImg.src = bottomBannerSrc;
+            bottomImg.onload = function() {
+                bottomBanner.innerHTML = '';
+                bottomBanner.appendChild(bottomImg);
+            };
+            bottomImg.onerror = function() {
+                const placeholder = currentLang === 'en' ? 'bndown.png' : 'bndownar.png';
+                bottomBanner.innerHTML = `<div class="banner-placeholder">Bottom Banner (${placeholder})</div>`;
+            };
+        }
+
+        // Initial render
+        updateContent();
+        loadBanners();
+    </script>
+</body>
+</html>
